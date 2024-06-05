@@ -5,11 +5,11 @@ function Header({ title }) {
 }
  
 export default function HomePage() {
-  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+  const names = ["Lewis Hamilton", "Max Verstappen", "Charles Leclerc"];
  
   return (
     <div>
-      <Header title="Develop. Preview. Ship." />
+      <Header title="Testing out stuff." />
       <ul>
         {names.map((name) => (
           <li key={name}>{name}</li>
