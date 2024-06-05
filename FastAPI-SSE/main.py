@@ -18,13 +18,7 @@ map = {}
 
 # WAYPOINT STREAM ENDPOINT ------------------------------------------------------------
 
-async def waypoints_generator(id: str):
-    if id not in map:
-        data = json.dumps({
-            "lat": -1,
-            "lng": -1
-        })
-        yield f"event: locationUpdate\ndata: {data}\n\n"
+async def waypoints_generator():
     waypoints = open('waypoints.json')
     waypoints = json.load(waypoints)
     for waypoint in waypoints:
@@ -37,9 +31,9 @@ async def waypoints_generator(id: str):
     }
     yield f"event: locationUpdate\ndata: {json.dumps(exit_data)}\n\n"
 
-@app.get('/get-waypoints/{id}')
-async def getwaypoints(id:str):
-    return StreamingResponse(waypoints_generator(id), media_type="text/event-stream")
+@app.get('/get-waypoints')
+async def getwaypoints():
+    return StreamingResponse(waypoints_generator(), media_type="text/event-stream")
 
 # TOKEN STREAM ENDPOINTS ------------------------------------------------------------
 
