@@ -72,6 +72,7 @@ const ChatInput = () => {
             }
             else if (res_data.status == "error") {
               console.log("error");
+              setModelResponse("Internal Server Error")
               eventSource.close();
             } else {
                 const token = res_data.token
@@ -86,7 +87,12 @@ const ChatInput = () => {
         };
 
       } catch (error) {
-        console.error('Error:', error);
+        setModelResponse("Internal Server Error")
+        if (error.message.includes('Failed to fetch')) {
+          console.error('CORS error or Network issue:', error);
+        } else {
+          console.error('Error:', error);
+        }
       }
     }
   
