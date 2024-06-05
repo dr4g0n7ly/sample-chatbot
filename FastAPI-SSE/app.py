@@ -8,13 +8,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 map = {}
+
+# WAYPOINT STREAM ENDPOINT ------------------------------------------------------------
 
 async def waypoints_generator(id: str):
     if id not in map:
@@ -34,6 +36,12 @@ async def waypoints_generator(id: str):
         "lng": -1
     }
     yield f"event: locationUpdate\ndata: {json.dumps(exit_data)}\n\n"
+
+@app.get('/get-waypoints/{id}')
+async def getwaypoints(id:str):
+    return StreamingResponse(waypoints_generator(id), media_type="text/event-stream")
+
+# TOKEN STREAM ENDPOINTS ------------------------------------------------------------
 
 async def token_generator(id: str):
     if id not in map:
@@ -58,8 +66,6 @@ async def token_generator(id: str):
     del map[id]
     yield f"event: tokenStream\ndata: {data}\n\n"
 
-
-
 @app.post('/initiate-response')
 async def initiate(request_data: dict):
     input_text = request_data.get('query')
@@ -71,14 +77,16 @@ async def initiate(request_data: dict):
     }
     return Response(json.dumps(response))
 
-@app.get('/get-waypoints/{id}')
-async def getwaypoints(id:str):
-    return StreamingResponse(waypoints_generator(id), media_type="text/event-stream")
 
 @app.get('/get-response/{id}')
 async def getresponse(id:str):
     return StreamingResponse(token_generator(id), media_type="text/event-stream")
 
+# ROOT API ENDPOINT ------------------------------------------------------------
+
+@app.get('/')
+async def root():
+    return {'hello': 'world'}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

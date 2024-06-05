@@ -8,7 +8,10 @@ function Header({ title }) {
   return <h1>{title ? title : 'Default title'}</h1>;
 }
 
+const serverAddr = "https://27ea-34-148-88-33.ngrok-free.app"
+
 const Chatbot = () => {
+
   const [userQuery, setUserQuery] = useState(null);
   const [modelResponse, setModelResponse] = useState(null);
 
@@ -32,7 +35,7 @@ const Chatbot = () => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/initiate-response', {
+      const response = await fetch(serverAddr+'/initiate-response', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +57,7 @@ const Chatbot = () => {
 
       console.log(id, res);  // Output: the actual id and response
 
-      const eventSource = new EventSource(`http://127.0.0.1:8000/get-response/${id}`);
+      const eventSource = new EventSource(serverAddr+`/get-response/${id}`);
 
       eventSource.onopen = () => {
         console.log('EventSource connected');
@@ -78,6 +81,7 @@ const Chatbot = () => {
 
       eventSource.onerror = (error) => {
         console.error('EventSource failed', error);
+        setModelResponse('Internal Server Error')
         eventSource.close();
       };
 
