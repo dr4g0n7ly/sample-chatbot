@@ -1,10 +1,10 @@
 import LikeButton from './like-button';
  
-function Header({ title }) {
+const Header = ({ title }) => {
   return <h1>{title ? title : 'Default title'}</h1>;
 }
  
-export default function HomePage() {
+const HomePage = () => {
   const names = ["Lewis Hamilton", "Max Verstappen", "Charles Leclerc"];
  
   return (
@@ -20,3 +20,4 @@ export default function HomePage() {
   );
 }
 
+export default HomePage

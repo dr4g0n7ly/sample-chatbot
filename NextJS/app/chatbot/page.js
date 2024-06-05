@@ -8,7 +8,7 @@ function Header({ title }) {
   return <h1>{title ? title : 'Default title'}</h1>;
 }
 
-export default function Chatbot() {
+const Chatbot = () => {
   const [userQuery, setUserQuery] = useState(null);
   const [modelResponse, setModelResponse] = useState(null);
 
@@ -96,3 +96,5 @@ export default function Chatbot() {
     </div>
   );
 }
+
+export default Chatbot
