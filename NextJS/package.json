@@ -10,7 +10,10 @@
   "name": "nextjs",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/react": "18.3.3",
+    "typescript": "5.4.5"
+  },
   "author": "",
   "license": "ISC",
   "description": ""

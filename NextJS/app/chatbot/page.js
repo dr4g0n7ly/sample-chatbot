@@ -8,7 +8,7 @@ function Header({ title }) {
   return <h1>{title ? title : 'Default title'}</h1>;
 }
 
-const serverAddr = "https://27ea-34-148-88-33.ngrok-free.app"
+const serverAddr = "http://localhost:8000"
 
 const Chatbot = () => {
 
@@ -57,7 +57,7 @@ const Chatbot = () => {
 
       console.log(id, res);  // Output: the actual id and response
 
-      const eventSource = new EventSource(serverAddr+`/get-response/${id}`);
+      const eventSource = new EventSource(serverAddr+`/stream-response/${id}`);
 
       eventSource.onopen = () => {
         console.log('EventSource connected');
